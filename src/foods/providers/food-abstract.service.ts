@@ -1,6 +1,19 @@
 import { FoodInterface } from '../interfaces/food.interface';
 
-export abstract class FoodAbstract implements FoodInterface {
+/**
+ * class FoodAbstract for all food types
+ *
+ * Missing methods
+ * getName, setName, toJsonObject
+ *
+ * @todo: add above missing methods and attributes
+ */
+export class FoodAbstract implements FoodInterface {
+  public static ATTR_CAL = 'cal';
+  public static ATTR_CARB = 'carb';
+  public static ATTR_PROTEIN = 'protein';
+  public static ATTR_FAT = 'fat';
+
   /**
    * Model type, eg: carb, protein, veggie
    */
@@ -25,6 +38,13 @@ export abstract class FoodAbstract implements FoodInterface {
    * Fat number
    */
   protected fat: number;
+
+  /**
+   * @param type
+   */
+  constructor(type = '') {
+    this.type = type;
+  }
 
   /**
    * Get calories number
@@ -100,7 +120,7 @@ export abstract class FoodAbstract implements FoodInterface {
 
   /**
    * Save the food model
-   * 
+   *
    * @returns string
    */
   public save(): string {

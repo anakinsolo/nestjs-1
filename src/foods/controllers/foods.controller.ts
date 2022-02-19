@@ -1,15 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Req } from '@nestjs/common';
 import { FoodRepository } from '../providers/food-repository.service';
 import { ProteinService } from '../providers/protein.service';
+import { Request } from 'express';
 
 @Controller('foods')
-export class FoodController 
-{
+export class FoodController {
   private foodRepository: FoodRepository;
 
-  constructor(
-    foodRepository: FoodRepository
-  ) {
+  constructor(foodRepository: FoodRepository) {
     this.foodRepository = foodRepository;
   }
 
@@ -38,9 +36,10 @@ export class FoodController
     return this.foodRepository.getVeggieSource();
   }
 
-  @Get('save')
-  saveProtein() {
-    let proteinService = new ProteinService();
-    return this.foodRepository.saveFoodSource(proteinService);
+  @Post('save')
+  saveProtein(@Req() request: Request) {
+    const newFoodSource = this.foodRepository.createNewFoodSource(request.body);
+
+    return newFoodSource;
   }
 }

@@ -1,30 +1,48 @@
 import { Injectable } from '@nestjs/common';
 import { FoodAbstract } from './food-abstract.service';
-import { ProteinService } from './protein.service';
 
 @Injectable()
-export class FoodRepository 
-{
+export class FoodRepository {
   private allFoods = {
     carb: ['rice', 'bread'],
     protein: ['chicken', 'salmon', 'lean_pork'],
     veggie: ['zucchini', 'brussel_sprout', 'kale'],
   };
 
-  getAllFoodTypes() {
+  public getAllFoodTypes() {
     return this.allFoods;
   }
 
-  getCarbSource() {
+  public getCarbSource() {
     return this.allFoods.carb;
   }
 
-  getProteinSource() {
+  public getProteinSource() {
     return this.allFoods.protein;
   }
 
-  getVeggieSource() {
+  public getVeggieSource() {
     return this.allFoods.veggie;
+  }
+
+  public getNewFoodSource(type: string) {
+    const newFoodSource = new FoodAbstract(type);
+
+    return newFoodSource;
+  }
+
+  public createNewFoodSource(data): FoodAbstract {
+    const type = data['type'];
+    const newFoodSource = this.getNewFoodSource(type);
+
+    newFoodSource.setCal(data[FoodAbstract.ATTR_CAL]);
+    newFoodSource.setCarb(data[FoodAbstract.ATTR_CARB]);
+    newFoodSource.setFat(data[FoodAbstract.ATTR_FAT]);
+    newFoodSource.setProtein(data[FoodAbstract.ATTR_PROTEIN]);
+
+    this.saveFoodSource(newFoodSource);
+
+    return newFoodSource;
   }
 
   public saveFoodSource(foodSource: FoodAbstract) {
